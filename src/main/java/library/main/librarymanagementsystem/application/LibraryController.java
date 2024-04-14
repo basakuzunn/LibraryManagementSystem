@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.main.librarymanagementsystem.HelloApplication;
 
@@ -55,6 +56,21 @@ public class LibraryController implements Initializable {
         }
 
         booksList.setFixedCellSize(50.0);
+    }
+    @FXML
+    protected void help() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("help.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Create a new stage for the help page
+        Stage helpStage = new Stage();
+        helpStage.initModality(Modality.APPLICATION_MODAL);
+        helpStage.setTitle("Help");
+        helpStage.setScene(scene);
+        helpStage.showAndWait();
+
+
+
     }
 
     @FXML
