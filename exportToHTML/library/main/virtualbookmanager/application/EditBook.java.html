@@ -1,0 +1,159 @@
+<html>
+<head>
+<title>EditBook.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+EditBook.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">library.main.virtualbookmanager.application</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">javafx.geometry.Insets</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.scene.control.ButtonType</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.scene.control.Dialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.scene.control.Label</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.scene.control.TextField</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.scene.layout.GridPane</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Optional</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">EditBook {</span>
+
+    <span class="s0">private </span><span class="s1">String result</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">String getResult() {</span>
+        <span class="s0">return this</span><span class="s1">.result</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">EditBook() {</span>
+        <span class="s1">Dialog&lt;String&gt; dialog = </span><span class="s0">new </span><span class="s1">Dialog&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">dialog.setTitle(</span><span class="s2">&quot;Edit Book&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">dialog.setHeaderText(</span><span class="s2">&quot;Edit book&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">ButtonType confirm = </span><span class="s0">new </span><span class="s1">ButtonType(</span><span class="s2">&quot;Edit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">dialog.getDialogPane().getButtonTypes().add(confirm)</span><span class="s0">;</span>
+
+        <span class="s1">GridPane grid = </span><span class="s0">new </span><span class="s1">GridPane()</span><span class="s0">;</span>
+        <span class="s1">grid.setHgap(</span><span class="s3">10</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.setVgap(</span><span class="s3">10</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.setPadding(</span><span class="s0">new </span><span class="s1">Insets(</span><span class="s3">20</span><span class="s0">,</span><span class="s3">150</span><span class="s0">,</span><span class="s3">10</span><span class="s0">,</span><span class="s3">10</span><span class="s1">))</span><span class="s0">;</span>
+
+        <span class="s1">TextField author = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">author.setPromptText(</span><span class="s2">&quot;Author&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField title = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">title.setPromptText(</span><span class="s2">&quot;Title&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField isbn = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">isbn.setPromptText(</span><span class="s2">&quot;ISBN&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField category = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">category.setPromptText(</span><span class="s2">&quot;Category&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField edition = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">edition.setPromptText(</span><span class="s2">&quot;Edition&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField language = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">language.setPromptText(</span><span class="s2">&quot;Language&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField publisher = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">publisher.setPromptText(</span><span class="s2">&quot;Publisher&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField date = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">date.setPromptText(</span><span class="s2">&quot;Date&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField translator = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">translator.setPromptText(</span><span class="s2">&quot;Translator&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField tags = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">tags.setPromptText(</span><span class="s2">&quot;Tags&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField rate = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">rate.setPromptText(</span><span class="s2">&quot;Rate&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField imageurl = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">imageurl.setPromptText(</span><span class="s2">&quot;Image URL&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">TextField subtitle = </span><span class="s0">new </span><span class="s1">TextField()</span><span class="s0">;</span>
+        <span class="s1">subtitle.setPromptText(</span><span class="s2">&quot;Subtitle&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Author:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(author</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Title:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(title</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;ISBN:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">2</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(isbn</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">2</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Category:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(category</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">3</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Edition:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">4</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(category</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">4</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Language:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">5</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(language</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">5</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Publisher:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">6</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(publisher</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">6</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Date:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">7</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(date</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">7</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Translator:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">8</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(translator</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">8</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Tags:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">9</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(tags</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">9</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Rate:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">10</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(rate</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">10</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Image URL:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">11</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(imageurl</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">11</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">grid.add(</span><span class="s0">new </span><span class="s1">Label(</span><span class="s2">&quot;Subtitle:&quot;</span><span class="s1">)</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s3">12</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">grid.add(subtitle</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">12</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">dialog.getDialogPane().setContent(grid)</span><span class="s0">;</span>
+
+        <span class="s1">dialog.setResultConverter(dialogButton -&gt; {</span>
+            <span class="s0">if </span><span class="s1">(dialogButton == confirm) {</span>
+                <span class="s0">return</span>
+                <span class="s1">author.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">title.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">isbn.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">category.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">edition.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">language.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">publisher.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">date.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">translator.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">tags.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">rate.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">imageurl.getText() + </span><span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                <span class="s1">subtitle.getText()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">return null;</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">Optional&lt;String&gt; rslt = dialog.showAndWait()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(rslt.isPresent() ) {</span>
+            <span class="s0">this</span><span class="s1">.result = rslt.get()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else this</span><span class="s1">.result = </span><span class="s0">null;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

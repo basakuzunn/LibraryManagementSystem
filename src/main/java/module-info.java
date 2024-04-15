@@ -4,8 +4,8 @@ module library.main.librarymanagementsystem {
 
     requires org.controlsfx.controls;
     requires com.fasterxml.jackson.databind;
-    opens library.main.librarymanagementsystem to javafx.fxml;
-    exports library.main.librarymanagementsystem;
-    exports library.main.librarymanagementsystem.application;
-    opens library.main.librarymanagementsystem.application to javafx.fxml;
+    opens library.main.virtualbookmanager to javafx.fxml;
+    exports library.main.virtualbookmanager;
+    exports library.main.virtualbookmanager.application;
+    opens library.main.virtualbookmanager.application to javafx.fxml;
 }

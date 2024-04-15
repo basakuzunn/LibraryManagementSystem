@@ -1,0 +1,362 @@
+<html>
+<head>
+<title>LibraryController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+LibraryController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">library.main.virtualbookmanager.application</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.fasterxml.jackson.databind.JsonNode</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.fasterxml.jackson.databind.ObjectMapper</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.fasterxml.jackson.databind.node.ObjectNode</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.collections.ObservableList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.fxml.FXML</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.fxml.FXMLLoader</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.fxml.Initializable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.scene.Scene</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.scene.control.*</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.stage.Modality</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">javafx.stage.Stage</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">library.main.virtualbookmanager.HelloApplication</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.io.*</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.net.URL</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.nio.file.Files</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.nio.file.Path</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.nio.file.Paths</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.ResourceBundle</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">LibraryController </span><span class="s0">implements </span><span class="s1">Initializable {</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">ListView&lt;String&gt; booksList</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField author</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField book</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField isbn</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField category</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField edition</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField language</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField publisher</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField date</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField translator</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField tags</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField rate</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField imageurl</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField subtitle</span><span class="s0">;</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">TextField search</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">String DATA_FILE_ABS_PATH = </span><span class="s2">&quot;src</span><span class="s0">\\</span><span class="s2">main</span><span class="s0">\\</span><span class="s2">data</span><span class="s0">\\</span><span class="s2">books.json&quot;</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">List&lt;JsonNode&gt; bookDataList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">initialize(URL url</span><span class="s0">, </span><span class="s1">ResourceBundle resourceBundle) {</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">loadBooks()</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">booksList.setFixedCellSize(</span><span class="s3">50.0</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@FXML</span>
+    <span class="s0">protected void </span><span class="s1">help() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+        <span class="s1">FXMLLoader fxmlLoader = </span><span class="s0">new </span><span class="s1">FXMLLoader(HelloApplication.</span><span class="s0">class</span><span class="s1">.getResource(</span><span class="s2">&quot;help.fxml&quot;</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">Scene scene = </span><span class="s0">new </span><span class="s1">Scene(fxmlLoader.load())</span><span class="s0">;</span>
+
+        <span class="s4">// Create a new stage for the help page</span>
+        <span class="s1">Stage helpStage = </span><span class="s0">new </span><span class="s1">Stage()</span><span class="s0">;</span>
+        <span class="s1">helpStage.initModality(Modality.APPLICATION_MODAL)</span><span class="s0">;</span>
+        <span class="s1">helpStage.setTitle(</span><span class="s2">&quot;Help&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">helpStage.setScene(scene)</span><span class="s0">;</span>
+        <span class="s1">helpStage.showAndWait()</span><span class="s0">;</span>
+
+
+
+    <span class="s1">}</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">protected void </span><span class="s1">searchBook() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+
+        <span class="s1">String search_text = search.getText().strip().toLowerCase()</span><span class="s0">;</span>
+        <span class="s1">loadBooks()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(search_text.length() &gt;= </span><span class="s3">3</span><span class="s1">) {</span>
+            <span class="s1">ArrayList&lt;String&gt; results = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+
+            <span class="s0">for</span><span class="s1">(String book: booksList.getItems()) {</span>
+                <span class="s0">if </span><span class="s1">(book.toLowerCase().contains(search_text)) results.add(book)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s1">booksList.getItems().clear()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(results.size() &gt; </span><span class="s3">0</span><span class="s1">) {</span>
+                <span class="s0">for</span><span class="s1">(String found_book: results) booksList.getItems().add(found_book)</span><span class="s0">;</span>
+                <span class="s1">booksList.refresh()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">protected void </span><span class="s1">editBook() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+        <span class="s1">ObservableList&lt;Integer&gt; selectedIndices = booksList.getSelectionModel().getSelectedIndices()</span><span class="s0">;</span>
+
+        <span class="s0">if </span><span class="s1">(selectedIndices.size() == </span><span class="s3">1</span><span class="s1">) {</span>
+            <span class="s1">String bookToEdit = booksList.getItems().get(selectedIndices.get(</span><span class="s3">0</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">String oldIsbn = bookToEdit.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">2</span><span class="s1">]</span><span class="s0">;</span>
+
+
+            <span class="s1">EditBook eb = </span><span class="s0">new </span><span class="s1">EditBook()</span><span class="s0">;</span>
+            <span class="s1">String str = eb.getResult()</span><span class="s0">;</span>
+
+            <span class="s0">if </span><span class="s1">(str != </span><span class="s0">null</span><span class="s1">) {</span>
+
+                <span class="s1">JsonNode bookToEditNode = </span><span class="s0">null;</span>
+                <span class="s0">for </span><span class="s1">(JsonNode book : bookDataList) {</span>
+                    <span class="s0">if </span><span class="s1">(book.get(</span><span class="s2">&quot;isbn&quot;</span><span class="s1">).textValue().equals(oldIsbn)) {</span>
+                        <span class="s1">bookToEditNode = book</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+
+                <span class="s0">assert </span><span class="s1">bookToEditNode != </span><span class="s0">null;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;author&quot;</span><span class="s0">, </span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">0</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;title&quot;</span><span class="s0">, </span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">1</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;isbn&quot;</span><span class="s0">, </span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">2</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;category&quot;</span><span class="s0">, </span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">3</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;edition&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">4</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;language&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">5</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;publisher&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">6</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;date&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">7</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;translator&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">8</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;tags&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">9</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;rate&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">10</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;imageurl&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">11</span><span class="s1">])</span><span class="s0">;</span>
+                <span class="s1">((ObjectNode)bookToEditNode).put(</span><span class="s2">&quot;subtitle&quot;</span><span class="s0">,</span><span class="s1">str.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">12</span><span class="s1">])</span><span class="s0">;</span>
+
+
+
+
+
+
+                <span class="s1">updateDataFile()</span><span class="s0">;</span>
+                <span class="s1">loadBooks()</span><span class="s0">;</span>
+                <span class="s1">search.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">protected void </span><span class="s1">deleteBook() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+        <span class="s1">ObservableList&lt;Integer&gt; selectedIndices = booksList.getSelectionModel().getSelectedIndices()</span><span class="s0">;</span>
+
+        <span class="s0">if </span><span class="s1">(selectedIndices.size() == </span><span class="s3">1</span><span class="s1">) {</span>
+            <span class="s1">String bookToEdit = booksList.getItems().get(selectedIndices.get(</span><span class="s3">0</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">String oldIsbn = bookToEdit.split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s3">2</span><span class="s1">]</span><span class="s0">;</span>
+
+            <span class="s1">bookDataList.removeIf(book -&gt; book.get(</span><span class="s2">&quot;isbn&quot;</span><span class="s1">).textValue().equals(oldIsbn))</span><span class="s0">;</span>
+
+            <span class="s1">updateDataFile()</span><span class="s0">;</span>
+            <span class="s1">loadBooks()</span><span class="s0">;</span>
+            <span class="s1">search.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">protected void </span><span class="s1">addItem() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+
+        <span class="s1">String author_text = author.getText()</span><span class="s0">;</span>
+        <span class="s1">String book_text = book.getText()</span><span class="s0">;</span>
+        <span class="s1">String isbn_text = isbn.getText()</span><span class="s0">;</span>
+        <span class="s1">String category_text = category.getText()</span><span class="s0">;</span>
+        <span class="s1">String edition_text = edition.getText()</span><span class="s0">;</span>
+        <span class="s1">String language_text = language.getText()</span><span class="s0">;</span>
+        <span class="s1">String publisher_text = publisher.getText()</span><span class="s0">;</span>
+        <span class="s1">String date_text = date.getText()</span><span class="s0">;</span>
+        <span class="s1">String translator_text = translator.getText()</span><span class="s0">;</span>
+        <span class="s1">String tags_text = tags.getText()</span><span class="s0">;</span>
+        <span class="s1">String rate_text = rate.getText()</span><span class="s0">;</span>
+        <span class="s1">String imageurl_text = imageurl.getText()</span><span class="s0">;</span>
+        <span class="s1">String subtitle_text = subtitle.getText()</span><span class="s0">;</span>
+
+        <span class="s1">ObjectMapper mapper = </span><span class="s0">new </span><span class="s1">ObjectMapper()</span><span class="s0">;</span>
+
+        <span class="s1">ObjectNode newBook = mapper.createObjectNode()</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;author&quot;</span><span class="s0">, </span><span class="s1">author_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;title&quot;</span><span class="s0">, </span><span class="s1">book_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;isbn&quot;</span><span class="s0">, </span><span class="s1">isbn_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;category&quot;</span><span class="s0">, </span><span class="s1">category_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;edition&quot;</span><span class="s0">, </span><span class="s1">edition_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;language&quot;</span><span class="s0">, </span><span class="s1">language_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;publisher&quot;</span><span class="s0">, </span><span class="s1">publisher_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;date&quot;</span><span class="s0">, </span><span class="s1">date_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;translator&quot;</span><span class="s0">, </span><span class="s1">translator_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;tags&quot;</span><span class="s0">, </span><span class="s1">tags_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;rate&quot;</span><span class="s0">, </span><span class="s1">rate_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;imageurl&quot;</span><span class="s0">, </span><span class="s1">imageurl_text)</span><span class="s0">;</span>
+        <span class="s1">newBook.put(</span><span class="s2">&quot;subtitle&quot;</span><span class="s0">, </span><span class="s1">subtitle_text)</span><span class="s0">;</span>
+
+
+
+        <span class="s4">//String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newBook);</span>
+
+        <span class="s1">bookDataList.add(newBook)</span><span class="s0">;</span>
+
+        <span class="s1">updateDataFile()</span><span class="s0">;</span>
+
+        <span class="s1">author.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">book.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">isbn.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">category.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">edition.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">language.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">publisher.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">date.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">translator.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">tags.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">rate.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">imageurl.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">subtitle.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+
+
+        <span class="s0">this</span><span class="s1">.loadBooks()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">loadBooks() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+<span class="s4">//        Path p = Paths.get(&quot;../../data&quot;);</span>
+<span class="s4">//        Objects.requireNonNull(p);</span>
+        <span class="s0">final </span><span class="s1">File file = </span><span class="s0">new </span><span class="s1">File(DATA_FILE_ABS_PATH)</span><span class="s0">;</span>
+        <span class="s1">List&lt;JsonNode&gt; books = getBooksDataFromFile(file)</span><span class="s0">;</span>
+        <span class="s1">booksList.getItems().clear()</span><span class="s0">;</span>
+        <span class="s1">ObjectMapper mapper = </span><span class="s0">new </span><span class="s1">ObjectMapper()</span><span class="s0">;</span>
+
+        <span class="s0">for</span><span class="s1">(JsonNode book: books) {</span>
+            <span class="s1">String bookString = book.get(</span><span class="s2">&quot;author&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;title&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;isbn&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;category&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;edition&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;language&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;publisher&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;date&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;translator&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;tags&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;rate&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;imageurl&quot;</span><span class="s1">) +</span>
+                    <span class="s2">&quot; &quot; </span><span class="s1">+</span>
+                    <span class="s1">book.get(</span><span class="s2">&quot;subtitle&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+
+            <span class="s1">booksList.getItems().add(bookString.replace(</span><span class="s2">&quot;</span><span class="s0">\&quot;</span><span class="s2">&quot;</span><span class="s0">, </span><span class="s2">&quot;&quot;</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">booksList.refresh()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">changeScene() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+
+        <span class="s1">FXMLLoader fxmlLoader = </span><span class="s0">new </span><span class="s1">FXMLLoader(HelloApplication.</span><span class="s0">class</span><span class="s1">.getResource(</span><span class="s2">&quot;library.fxml&quot;</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">Scene scene = </span><span class="s0">new </span><span class="s1">Scene(fxmlLoader.load())</span><span class="s0">; </span><span class="s4">// scene</span>
+
+        <span class="s1">Stage stage = HelloApplication.getPrimaryStage()</span><span class="s0">;</span>
+        <span class="s1">stage.hide()</span><span class="s0">;</span>
+        <span class="s1">stage.setTitle(</span><span class="s2">&quot;Library Management System&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">stage.setScene(scene)</span><span class="s0">;</span>
+        <span class="s1">stage.show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">List&lt;JsonNode&gt; getBooksDataFromFile(</span><span class="s0">final </span><span class="s1">File dataFile) </span><span class="s0">throws </span><span class="s1">IOException {</span>
+        <span class="s0">if </span><span class="s1">(!bookDataList.isEmpty()) {</span>
+            <span class="s0">return </span><span class="s1">bookDataList</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">List&lt;String&gt; read = Files.readAllLines(Paths.get(dataFile.getPath()))</span><span class="s0">;</span>
+            <span class="s1">String jsonString = String.join(</span><span class="s2">&quot;&quot;</span><span class="s0">, </span><span class="s1">read)</span><span class="s0">;</span>
+            <span class="s1">ObjectMapper mapper = </span><span class="s0">new </span><span class="s1">ObjectMapper()</span><span class="s0">;</span>
+
+            <span class="s1">JsonNode actualObj = mapper.readTree(jsonString)</span><span class="s0">;</span>
+            <span class="s0">for </span><span class="s1">(JsonNode book : actualObj.get(</span><span class="s2">&quot;books&quot;</span><span class="s1">)) {</span>
+                <span class="s1">bookDataList.add(book)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">return </span><span class="s1">bookDataList</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+            <span class="s0">return </span><span class="s1">bookDataList</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">updateDataFile() </span><span class="s0">throws </span><span class="s1">IOException {</span>
+        <span class="s1">ObjectMapper mapper = </span><span class="s0">new </span><span class="s1">ObjectMapper()</span><span class="s0">;</span>
+        <span class="s1">ByteArrayOutputStream out = </span><span class="s0">new </span><span class="s1">ByteArrayOutputStream()</span><span class="s0">;</span>
+
+        <span class="s1">mapper.writeValue(out</span><span class="s0">, </span><span class="s1">bookDataList)</span><span class="s0">;</span>
+
+        <span class="s0">byte</span><span class="s1">[] data = out.toByteArray()</span><span class="s0">;</span>
+        <span class="s1">String newFileContent = </span><span class="s2">&quot;{&quot; </span><span class="s1">+</span>
+                <span class="s2">&quot;</span><span class="s0">\&quot;</span><span class="s2">books</span><span class="s0">\&quot;</span><span class="s2">:&quot; </span><span class="s1">+</span>
+                <span class="s0">new </span><span class="s1">String(data) +</span>
+                <span class="s2">&quot;}&quot;</span><span class="s0">;</span>
+
+
+        <span class="s1">Path p = Paths.get(DATA_FILE_ABS_PATH)</span><span class="s0">;</span>
+        <span class="s1">File myObj = </span><span class="s0">new </span><span class="s1">File(String.valueOf(p))</span><span class="s0">;</span>
+        <span class="s1">FileWriter myWriter = </span><span class="s0">new </span><span class="s1">FileWriter(myObj)</span><span class="s0">;</span>
+        <span class="s1">myWriter.write(newFileContent)</span><span class="s0">;</span>
+        <span class="s1">myWriter.close()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
