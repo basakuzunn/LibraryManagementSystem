@@ -1,0 +1,12 @@
+{
+	"branch": "main",
+	"generateDocsOnPush": true,
+	"docsInclude": ["src/.*.(ts|tsx)"],
+	"docsExclude": ["docs.json", "src/.*.md"],
+	"generateDocumentationPath": "",
+	"unitTestPrompt": "",
+	"generateUnitTestOnPush": false,
+	"testFileExtension": ".test.ts",
+	"testsInclude": ["src/.*.(ts|tsx)"],
+	"testsExclude": ["docs.json", "src/.*.md", "src/.*.test.ts"]
+}
