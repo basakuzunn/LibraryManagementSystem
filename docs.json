@@ -3,7 +3,7 @@
 	"generateDocsOnPush": true,
 	"docsInclude": ["src/.*.(ts|tsx)"],
 	"docsExclude": ["docs.json", "src/.*.md"],
-	"generateDocumentationPath": ""C:\Users\basak\OneDrive\Masaüstü"",
+	"generateDocumentationPath": "C:\Users\basak\OneDrive\Masaüstü",
 	"unitTestPrompt": "",
 	"generateUnitTestOnPush": false,
 	"testFileExtension": ".test.ts",
